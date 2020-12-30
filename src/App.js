@@ -1,8 +1,8 @@
 import "./App.css";
 import MyNavbar from "./MyNavbar";
 import MyJumbotron from "./MyJumbotron";
+import MyQuote from "./MyQuote";
 import React, { Component } from "react";
-import { Jumbotron, Container } from "reactstrap";
 
 class App extends Component {
   render() {
@@ -10,6 +10,7 @@ class App extends Component {
       <div>
         <MyNavbar />
         <MyJumbotron />
+        <MyQuote />
       </div>
     );
   }
