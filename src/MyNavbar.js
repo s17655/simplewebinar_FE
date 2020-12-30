@@ -17,35 +17,26 @@ import {
 class MyNavbar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isLoggedIn: true,
-      login: null,
-      isTeacher: true,
-      isAdmin: true,
-    };
     this.logOut = this.logOut.bind(this);
     this.logIn = this.logIn.bind(this);
   }
 
   logOut() {
-    this.setState((state) => ({
-      isLoggedIn: false,
-      login: null,
-      isTeacher: false,
-      isAdmin: false,
-    }));
+    this.props.onLogOut();
   }
 
   logIn() {
-    this.setState((state) => ({
-      isLoggedIn: true,
-      //login: null,
-      //isTeacher: false,
-      //isAdmin: false,
-    }));
+    this.props.onLogIn();
   }
 
   render() {
+
+    const isLoggedIn = this.props.isLoggedIn;
+    const login = this.props.login;
+    const isTeacher = this.props.isTeacher;
+    const isAdmin = this.props.isAdmin;
+
+
     return (
       <div>
         <Navbar expand="md" color="dark" dark>
@@ -53,7 +44,7 @@ class MyNavbar extends React.Component {
           <NavbarToggler />
           <Collapse isOpen="true" navbar>
             <Nav className="mr-auto" navbar>
-              {this.state.isLoggedIn && (
+              {isLoggedIn && (
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Student
@@ -63,7 +54,7 @@ class MyNavbar extends React.Component {
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
-              {this.state.isLoggedIn && this.state.isTeacher && (
+              {isLoggedIn && isTeacher && (
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Teacher
@@ -74,7 +65,7 @@ class MyNavbar extends React.Component {
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
-              {this.state.isLoggedIn && this.state.isAdmin && (
+              {isLoggedIn && isAdmin && (
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Admin
@@ -89,14 +80,14 @@ class MyNavbar extends React.Component {
                 <NavLink href="#">Contact</NavLink>
               </NavItem>
             </Nav>
-            {this.state.isLoggedIn && (
+            {isLoggedIn && (
               <Button color="warning" onClick={this.logOut}>
                 Log out
               </Button>
             )}
-            {!this.state.isLoggedIn && <Button color="info">Sign up</Button>}
+            {!isLoggedIn && <Button color="info">Sign up</Button>}
             {"'"}
-            {!this.state.isLoggedIn && (
+            {!isLoggedIn && (
               <Button color="success" onClick={this.logIn}>
                 Log in
               </Button>
