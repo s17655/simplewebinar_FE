@@ -1,7 +1,6 @@
 import React from "react";
 import { Modal, ModalHeader, ModalBody, Button, ModalFooter } from "reactstrap";
 
-
 // przy wywołaniu MyModal należy zawsze dodać key={Date.now()}, aby wymusić stworzenie nowej instancji modala
 class MyModal extends React.Component {
   constructor(props) {
