@@ -3,6 +3,7 @@ import MyNavbar from "./MyNavbar";
 import MyJumbotron from "./MyJumbotron";
 import MyQuote from "./MyQuote";
 import MyModal from "./MyModal";
+import Main from "./Main"
 import React, { Component } from "react";
 import { Container, Table } from "reactstrap";
 
@@ -35,7 +36,7 @@ class App extends Component {
       //isTeacher: false,
       //isAdmin: false,
     }));
-    this.modal = <MyModal key={Date.now()} isSuccess={false} body="testBody"/>;
+    this.modal = <MyModal key={Date.now()} isSuccess={false} body="testBody" redirectToHome={true}/>;
   }
 
   render() {
@@ -54,6 +55,7 @@ class App extends Component {
           onLogOut={this.logOut}
           onLogIn={this.logIn}
         />
+        <Main />
         <MyJumbotron />
 
         <Container>
