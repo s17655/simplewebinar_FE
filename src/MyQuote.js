@@ -11,12 +11,12 @@ function MyQuote(props){
       <hr/>
       <Container>
         <blockquote className="blockquote mb-0">
-          <p Style="text-align:right">
+          <p style={{"textAlign":"right"}}>
             {" "}
             Live as if you were to die tomorrow. Learn as if you were to live forever.
             {" "}
           </p>
-          <footer className="blockquote-footer" Style="text-align:right">
+          <footer className="blockquote-footer" style={{"textAlign":"right"}}>
             Mahatma Gandhi
           </footer>
         </blockquote>

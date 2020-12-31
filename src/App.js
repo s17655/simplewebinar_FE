@@ -2,7 +2,10 @@ import "./App.css";
 import MyNavbar from "./MyNavbar";
 import MyJumbotron from "./MyJumbotron";
 import MyQuote from "./MyQuote";
+import MyModal from "./MyModal";
+import ModalExample from "./MyModalFunction";
 import React, { Component } from "react";
+import { Container, Table } from "reactstrap";
 
 class App extends Component {
   constructor(props) {
@@ -33,11 +36,10 @@ class App extends Component {
       //isTeacher: false,
       //isAdmin: false,
     }));
+    this.modal = <MyModal key={Date.now()} isSuccess={false} body="testBody"/>;
   }
 
-
   render() {
-
     const isLoggedIn = this.state.isLoggedIn;
     const login = this.state.login;
     const isTeacher = this.state.isTeacher;
@@ -52,9 +54,12 @@ class App extends Component {
           isAdmin={isAdmin}
           onLogOut={this.logOut}
           onLogIn={this.logIn}
-         />
+        />
         <MyJumbotron />
+
+
         <MyQuote />
+        {this.modal}
       </div>
     );
   }

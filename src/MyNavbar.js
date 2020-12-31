@@ -42,14 +42,14 @@ class MyNavbar extends React.Component {
         <Navbar expand="md" color="dark" dark>
           <NavbarBrand href="#">Simple Webinar</NavbarBrand>
           <NavbarToggler />
-          <Collapse isOpen="true" navbar>
+          <Collapse isOpen={true} navbar>
             <Nav className="mr-auto" navbar>
               {isLoggedIn && (
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Student
                   </DropdownToggle>
-                  <DropdownMenu left>
+                  <DropdownMenu left="true">
                     <DropdownItem>My webinars</DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -59,7 +59,7 @@ class MyNavbar extends React.Component {
                   <DropdownToggle nav caret>
                     Teacher
                   </DropdownToggle>
-                  <DropdownMenu left>
+                  <DropdownMenu left="true">
                     <DropdownItem>My webinars</DropdownItem>
                     <DropdownItem>Add Webinar</DropdownItem>
                   </DropdownMenu>
@@ -70,7 +70,7 @@ class MyNavbar extends React.Component {
                   <DropdownToggle nav caret>
                     Admin
                   </DropdownToggle>
-                  <DropdownMenu left>
+                  <DropdownMenu left="true">
                     <DropdownItem>Users</DropdownItem>
                     <DropdownItem>Add User</DropdownItem>
                   </DropdownMenu>
