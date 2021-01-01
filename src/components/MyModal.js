@@ -20,7 +20,7 @@ class MyModal extends React.Component {
 
   render() {
     const okButton = this.props.redirectToHome ? (
-      <Link to="/aaa">
+      <Link to="/">
         <Button color="info" onClick={this.onOk}>
           OK
         </Button>

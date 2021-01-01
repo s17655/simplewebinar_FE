@@ -1,11 +1,8 @@
-import "./App.css";
 import MyNavbar from "./MyNavbar";
-import MyJumbotron from "./MyJumbotron";
 import MyQuote from "./MyQuote";
-import MyModal from "./MyModal";
+import MyModal from "./components/MyModal.js";
 import Main from "./Main"
 import React, { Component } from "react";
-import { Container, Table } from "reactstrap";
 
 class App extends Component {
   constructor(props) {
@@ -27,6 +24,7 @@ class App extends Component {
       isTeacher: false,
       isAdmin: false,
     }));
+    this.modal = <MyModal key={Date.now()} isSuccess={true} body= "You were successfully logged out" redirectToHome={true}/>;
   }
 
   logIn() {
@@ -36,7 +34,6 @@ class App extends Component {
       //isTeacher: false,
       //isAdmin: false,
     }));
-    this.modal = <MyModal key={Date.now()} isSuccess={false} body="testBody" redirectToHome={true}/>;
   }
 
   render() {
@@ -56,41 +53,6 @@ class App extends Component {
           onLogIn={this.logIn}
         />
         <Main />
-        <MyJumbotron />
-
-        <Container>
-          <h1 className="page-header">
-            <small> Upcoming Webinars: </small>
-          </h1>
-        </Container>
-        <br />
-        <Container>
-          <Table striped hover>
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Teacher</th>
-                <th>Date</th>
-                <th>Code</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-            </tbody>
-          </Table>
-        </Container>
-
         <MyQuote />
         {this.modal}
       </div>

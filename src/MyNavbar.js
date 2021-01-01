@@ -13,6 +13,8 @@ import {
   DropdownItem,
   Button,
 } from "reactstrap";
+import { Link } from "react-router-dom";
+
 
 class MyNavbar extends React.Component {
   constructor(props) {
@@ -40,7 +42,9 @@ class MyNavbar extends React.Component {
     return (
       <div>
         <Navbar expand="md" color="dark" dark>
-          <NavbarBrand href="#">Simple Webinar</NavbarBrand>
+          <Link to="/">
+            <NavbarBrand >Simple Webinar</NavbarBrand>
+          </Link>
           <NavbarToggler />
           <Collapse isOpen={true} navbar>
             <Nav className="mr-auto" navbar>
@@ -49,8 +53,11 @@ class MyNavbar extends React.Component {
                   <DropdownToggle nav caret>
                     Student
                   </DropdownToggle>
+
                   <DropdownMenu left="true">
+                  <Link to="/mywebinars">
                     <DropdownItem>My webinars</DropdownItem>
+                  </Link>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
@@ -60,8 +67,12 @@ class MyNavbar extends React.Component {
                     Teacher
                   </DropdownToggle>
                   <DropdownMenu left="true">
+                  <Link to="/teacherwebinars">
                     <DropdownItem>My webinars</DropdownItem>
+                  </Link>
+                  <Link to="/addwebinar">
                     <DropdownItem>Add Webinar</DropdownItem>
+                  </Link>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
@@ -71,13 +82,19 @@ class MyNavbar extends React.Component {
                     Admin
                   </DropdownToggle>
                   <DropdownMenu left="true">
+                  <Link to="/userlist">
                     <DropdownItem>Users</DropdownItem>
+                  </Link>
+                  <Link to="/adduser">
                     <DropdownItem>Add User</DropdownItem>
+                  </Link>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
               <NavItem>
-                <NavLink href="#">Contact</NavLink>
+              <Link to="/contact">
+                <NavLink>Contact</NavLink>
+              </Link>
               </NavItem>
             </Nav>
             {isLoggedIn && (
@@ -85,12 +102,17 @@ class MyNavbar extends React.Component {
                 Log out
               </Button>
             )}
-            {!isLoggedIn && <Button color="info">Sign up</Button>}
+            {!isLoggedIn && (
+              <Link to="/signup">
+              <Button color="info">Sign up</Button>
+              </Link>)}
             {"'"}
             {!isLoggedIn && (
+              <Link to="/login">
               <Button color="success" onClick={this.logIn}>
                 Log in
               </Button>
+              </Link>
             )}
             {"'"}
           </Collapse>
