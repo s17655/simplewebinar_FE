@@ -8,6 +8,7 @@ function MyQuote(props){
       <div>
       <br/>
       <br/>
+      <br/>
       <hr/>
       <Container>
         <blockquote className="blockquote mb-0">

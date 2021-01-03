@@ -11,7 +11,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Button,
+  Button
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -20,15 +20,10 @@ class MyNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.logOut = this.logOut.bind(this);
-    this.logIn = this.logIn.bind(this);
   }
 
   logOut() {
     this.props.onLogOut();
-  }
-
-  logIn() {
-    this.props.onLogIn();
   }
 
   render() {
@@ -98,13 +93,17 @@ class MyNavbar extends React.Component {
               </NavItem>
             </Nav>
             {isLoggedIn && (
-              <Button color="warning" onClick={this.logOut}>
+              <Button color="secondary"  disabled={true}> Logged as: {login} </Button>
+            )}
+            {"'"}
+            {isLoggedIn && (
+              <Button color="warning"  onClick={this.logOut}>
                 Log out
               </Button>
             )}
             {!isLoggedIn && (
               <Link to="/signup">
-              <Button color="info">Sign up</Button>
+                <Button color="info">Sign up</Button>
               </Link>)}
             {"'"}
             {!isLoggedIn && (

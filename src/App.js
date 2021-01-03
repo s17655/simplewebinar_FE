@@ -1,20 +1,22 @@
 import MyNavbar from "./MyNavbar";
 import MyQuote from "./MyQuote";
 import MyModal from "./components/MyModal.js";
-import Main from "./Main"
+import MyController from "./MyController"
 import React, { Component } from "react";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: true,
+      isLoggedIn: false,
       login: null,
-      isTeacher: true,
-      isAdmin: true,
+      isTeacher: false,
+      isAdmin: false,
+      isModalOpen: false
     };
     this.logOut = this.logOut.bind(this);
     this.logIn = this.logIn.bind(this);
+    this.content=[];
   }
 
   logOut() {
@@ -24,15 +26,18 @@ class App extends Component {
       isTeacher: false,
       isAdmin: false,
     }));
-    this.modal = <MyModal key={Date.now()} isSuccess={true} body= "You were successfully logged out" redirectToHome={true}/>;
+    var newModal = <MyModal
+      key={Date.now()} isSuccess={true} body= "You were successfully logged out" redirectToHome={true}
+    />;
+    this.content.push(newModal);
   }
 
-  logIn() {
+  logIn(pLogin, pIsTeacher, pIsAdmin) {
     this.setState((state) => ({
       isLoggedIn: true,
-      //login: null,
-      //isTeacher: false,
-      //isAdmin: false,
+      login: pLogin,
+      isTeacher: pIsTeacher,
+      isAdmin: pIsAdmin
     }));
   }
 
@@ -50,11 +55,18 @@ class App extends Component {
           isTeacher={isTeacher}
           isAdmin={isAdmin}
           onLogOut={this.logOut}
+        />
+        <MyController
+          isLoggedIn={isLoggedIn}
+          login={login}
+          isTeacher={isTeacher}
+          isAdmin={isAdmin}
           onLogIn={this.logIn}
         />
-        <Main />
         <MyQuote />
-        {this.modal}
+        <div>
+          {this.content.length ? this.content : null}
+        </div>
       </div>
     );
   }
