@@ -40,7 +40,7 @@ class MyModal extends React.Component {
               ? "Success!"
               : "Wait - something has gone wrong!"}
           </ModalHeader>
-          <ModalBody>{this.props.body}</ModalBody>
+            <ModalBody>{this.props.body}</ModalBody>
           <ModalFooter>{okButton}</ModalFooter>
         </Modal>
       </div>

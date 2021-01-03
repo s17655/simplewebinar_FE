@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
 import { submitPost, showError, showOk } from "../functions/APIfunctions.js";
 import MyModal from "../components/MyModal.js";
 
-class SignupForm extends React.Component {
+class AddUserForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,19 +11,25 @@ class SignupForm extends React.Component {
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
+    this.inputTeacher = React.createRef();
+    this.inputAdmin = React.createRef();
   }
 
   async sendForm() {
     var success,
       textBody,
       redirect = false;
-    const myForm = document.getElementById("signupForm");
+    const myForm = document.getElementById("addUserForm");
     const formData = new FormData(myForm);
+    var data2 = {
+      isTeacher: this.inputTeacher.current.checked,
+      isAdmin: this.inputAdmin.current.checked
+    };
 
     let response = await submitPost(
       formData,
-      null,
-      "http://localhost:58870/api/simplewebinar/signup"
+      data2,
+      "http://localhost:58870/api/simplewebinar/users"
     );
 
     if (response.ok) {
@@ -52,16 +58,7 @@ class SignupForm extends React.Component {
     return (
       <div>
         <Container>
-          <Form id="signupForm">
-            <FormGroup>
-              <Label for="Email">Email</Label>
-              <Input
-                type="email"
-                name="Email"
-                id="Email"
-                placeholder="Add email"
-              />
-            </FormGroup>
+          <Form id="addUserForm">
             <FormGroup>
               <Label for="Login">Login</Label>
               <Input
@@ -69,6 +66,28 @@ class SignupForm extends React.Component {
                 name="Login"
                 id="Login"
                 placeholder="Add login"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="Name">Name</Label>
+              <Input type="text" name="Name" id="Name" placeholder="Add name" />
+            </FormGroup>
+            <FormGroup>
+              <Label for="Surname">Surname</Label>
+              <Input
+                type="text"
+                name="Surname"
+                id="Surname"
+                placeholder="Add surname"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="Email">Email</Label>
+              <Input
+                type="email"
+                name="Email"
+                id="Email"
+                placeholder="Add email"
               />
             </FormGroup>
             <FormGroup>
@@ -89,12 +108,34 @@ class SignupForm extends React.Component {
                 placeholder="Repeat password"
               />
             </FormGroup>
+            <Container>
+              <FormGroup>
+                <Label for="IsTeacher">
+                  <Input
+                    innerRef={this.inputTeacher}
+                    type="checkbox"
+                    id="IsTeacher"
+                  />
+                  Teacher
+                </Label>
+              </FormGroup>
+              <FormGroup>
+                <Label for="IsAdmin">
+                  <Input
+                    innerRef={this.inputAdmin}
+                    type="checkbox"
+                    id="IsAdmin"
+                  />
+                  Admin
+                </Label>
+              </FormGroup>
+            </Container>
             <Button
               color="info"
               style={{ float: "right" }}
               onClick={this.sendForm}
             >
-              Sign up
+              Submit
             </Button>
           </Form>
         </Container>
@@ -104,4 +145,4 @@ class SignupForm extends React.Component {
   }
 }
 
-export default SignupForm
+export default AddUserForm;

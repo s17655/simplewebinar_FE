@@ -1,9 +1,16 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Container,
+} from "reactstrap";
 import { submitPost, showError, showOk } from "../functions/APIfunctions.js";
 import MyModal from "../components/MyModal.js";
 
-class SignupForm extends React.Component {
+class ContactForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,13 +24,13 @@ class SignupForm extends React.Component {
     var success,
       textBody,
       redirect = false;
-    const myForm = document.getElementById("signupForm");
+    const myForm = document.getElementById("contactForm");
     const formData = new FormData(myForm);
 
     let response = await submitPost(
       formData,
       null,
-      "http://localhost:58870/api/simplewebinar/signup"
+      "http://localhost:58870/api/simplewebinar/messages"
     );
 
     if (response.ok) {
@@ -52,7 +59,16 @@ class SignupForm extends React.Component {
     return (
       <div>
         <Container>
-          <Form id="signupForm">
+          <Form id="contactForm">
+            <FormGroup>
+              <Label for="Message">Message</Label>
+              <Input
+                type="textarea"
+                name="Message"
+                id="Message"
+                placeholder="Add message"
+              />
+            </FormGroup>
             <FormGroup>
               <Label for="Email">Email</Label>
               <Input
@@ -62,39 +78,12 @@ class SignupForm extends React.Component {
                 placeholder="Add email"
               />
             </FormGroup>
-            <FormGroup>
-              <Label for="Login">Login</Label>
-              <Input
-                type="text"
-                name="Login"
-                id="Login"
-                placeholder="Add login"
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="Password">Password</Label>
-              <Input
-                type="password"
-                name="Password"
-                id="Password"
-                placeholder="Add password"
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="Password2">Repeat password</Label>
-              <Input
-                type="password"
-                name="Password2"
-                id="Password2"
-                placeholder="Repeat password"
-              />
-            </FormGroup>
             <Button
               color="info"
               style={{ float: "right" }}
               onClick={this.sendForm}
             >
-              Sign up
+              Submit
             </Button>
           </Form>
         </Container>
@@ -104,4 +93,4 @@ class SignupForm extends React.Component {
   }
 }
 
-export default SignupForm
+export default ContactForm;

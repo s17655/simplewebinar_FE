@@ -1,4 +1,4 @@
-import mergeTwoJSONStrings from './otherFunctions.js'
+import {mergeTwoJSONStrings} from './otherFunctions.js'
 
 
 //wysylka formularzy (DataForm object, JSON, url)
