@@ -2,6 +2,8 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import PageHome from "./pages/Home";
 import PageLogin from "./pages/Login";
+import PageSignup from "./pages/Signup";
+
 
 class MyController extends React.Component {
   constructor(props) {
@@ -19,7 +21,6 @@ class MyController extends React.Component {
     return (
       <Switch>
         {" "}
-        {/* The Switch decides which component to show based on the current URL.*/}
         <Route exact path="/" ><PageHome/></Route>}
         <Route exact path="/login"><PageLogin
           isLoggedIn={this.props.isLoggedIn}
@@ -28,6 +29,7 @@ class MyController extends React.Component {
           isAdmin={this.props.isLoggedIn}
           onLogIn={this.logIn}
         /></Route>}
+        <Route exact path="/signup" ><PageSignup/></Route>}
       </Switch>
     );
   }

@@ -44,3 +44,14 @@ function showErrorDataAnnotationsGenerated(response){
   }
   return responseText;
 }
+
+export async function showOk(response){
+  var responseText="";
+  await response.json()
+  .then(
+    resText=>{
+      responseText=resText;
+    }
+  )
+  return responseText;
+}
