@@ -6,6 +6,9 @@ import PageSignup from "./pages/Signup";
 import PageContact from "./pages/Contact";
 import PageAddUser from "./pages/AddUser";
 import PageAddWebinar from "./pages/AddWebinar";
+import PageMyWebinars from "./pages/MyWebinars";
+import PageTeacherWebinars from "./pages/TeacherWebinars";
+import PageUserList from "./pages/UserList";
 
 
 
@@ -38,6 +41,15 @@ class MyController extends React.Component {
         <Route exact path="/adduser" ><PageAddUser/></Route>}
         <Route exact path="/addwebinar" ><PageAddWebinar
           login={this.props.login}
+        /></Route>}
+        <Route exact path="/mywebinars" ><PageMyWebinars
+          login={this.props.login}
+        /></Route>}
+        <Route exact path="/teacherwebinars" ><PageTeacherWebinars
+          login={this.props.login}
+        /></Route>}
+        <Route exact path="/userlist" ><PageUserList
+          isAdmin={this.props.isAdmin}
         /></Route>}
       </Switch>
     );

@@ -21,6 +21,19 @@ export async function submitPost(formData, data2,  url){
 }
 
 
+export async function getObjects(url){
+  var response = await fetch(url, {
+    method:'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-type':'application/json'
+    }
+  }).then(resp=>resp.json());
+  return response;
+}
+
+
+
 
 export async function showError(response){
   var textError;
