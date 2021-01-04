@@ -9,6 +9,8 @@ import PageAddWebinar from "./pages/AddWebinar";
 import PageMyWebinars from "./pages/MyWebinars";
 import PageTeacherWebinars from "./pages/TeacherWebinars";
 import PageUserList from "./pages/UserList";
+import PageUser from "./pages/User";
+import PageWebinar from "./pages/Webinar";
 
 
 
@@ -50,6 +52,14 @@ class MyController extends React.Component {
         /></Route>}
         <Route exact path="/userlist" ><PageUserList
           isAdmin={this.props.isAdmin}
+        /></Route>}
+        <Route path="/user" ><PageUser
+          isAdmin={this.props.isAdmin}
+        /></Route>}
+        <Route path="/webinar" ><PageWebinar
+          isLoggedIn={this.props.isLoggedIn}
+          isTeacher={this.props.isTeacher}
+          login={this.props.login}
         /></Route>}
       </Switch>
     );

@@ -37,7 +37,9 @@ class FetchWebinarTable extends React.Component {
   }
 
   goToObject(key){
-    this.props.history.push("webinar/"+key);
+    this.props.history.push(
+      {pathname: "webinar/"+key,
+      webinarCode: key});
   }
 
 

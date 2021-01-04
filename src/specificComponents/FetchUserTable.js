@@ -22,7 +22,9 @@ class FetchUserTable extends React.Component {
   }
 
   goToObject(key){
-    this.props.history.push("user/"+key);
+    this.props.history.push(
+      {pathname: "user/"+key,
+      userCode: key});
   }
 
   renderTableData(jsonFile) {
