@@ -1,14 +1,16 @@
 import React from "react";
 import { Container, Table } from "reactstrap";
 import { getObjects } from "../functions/APIfunctions";
+import { withRouter } from 'react-router-dom';
 
 class FetchUserTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      jsonResponse: null,
+      jsonResponse: null
     };
     this.renderTableData = this.renderTableData.bind(this);
+    this.goToObject=this.goToObject.bind(this);
   }
 
   async componentDidMount() {
@@ -19,11 +21,16 @@ class FetchUserTable extends React.Component {
     this.setState({ jsonResponse: resp });
   }
 
+  goToObject(key){
+    this.props.history.push("user/"+key);
+  }
+
   renderTableData(jsonFile) {
+
     return jsonFile.map((user, index) => {
       const { login, isTeacher, isAdmin } = user; //destructuring
       return (
-        <tr key={login}>
+        <tr key={login} onClick={()=>this.goToObject(login)}>
           <td>{login}</td>
           <td>{""+isTeacher}</td>
           <td>{""+isAdmin}</td>
@@ -50,4 +57,4 @@ class FetchUserTable extends React.Component {
   }
 }
 
-export default FetchUserTable;
+export default withRouter(FetchUserTable);

@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Table } from "reactstrap";
 import { getObjects } from "../functions/APIfunctions";
+import { withRouter } from 'react-router-dom';
+
 
 class FetchWebinarTable extends React.Component {
   constructor(props) {
@@ -9,6 +11,7 @@ class FetchWebinarTable extends React.Component {
       jsonResponse: null,
     };
     this.renderTableData = this.renderTableData.bind(this);
+    this.goToObject = this.goToObject.bind(this);
   }
 
   async componentDidMount() {
@@ -23,7 +26,7 @@ class FetchWebinarTable extends React.Component {
     return jsonFile.map((webinar, index) => {
       const { topic, teacher, date, code } = webinar; //destructuring
       return (
-        <tr key={code}>
+        <tr key={code} onClick={()=>this.goToObject(code)} >
           <td>{topic}</td>
           <td>{teacher}</td>
           <td>{date}</td>
@@ -32,6 +35,11 @@ class FetchWebinarTable extends React.Component {
       );
     });
   }
+
+  goToObject(key){
+    this.props.history.push("webinar/"+key);
+  }
+
 
   render() {
     return (
@@ -52,4 +60,4 @@ class FetchWebinarTable extends React.Component {
   }
 }
 
-export default FetchWebinarTable;
+export default withRouter(FetchWebinarTable);
