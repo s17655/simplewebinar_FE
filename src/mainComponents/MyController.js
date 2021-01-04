@@ -1,16 +1,16 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import PageHome from "./pages/Home";
-import PageLogin from "./pages/Login";
-import PageSignup from "./pages/Signup";
-import PageContact from "./pages/Contact";
-import PageAddUser from "./pages/AddUser";
-import PageAddWebinar from "./pages/AddWebinar";
-import PageMyWebinars from "./pages/MyWebinars";
-import PageTeacherWebinars from "./pages/TeacherWebinars";
-import PageUserList from "./pages/UserList";
-import PageUser from "./pages/User";
-import PageWebinar from "./pages/Webinar";
+import PageHome from "../pages/Home";
+import PageLogin from "../pages/Login";
+import PageSignup from "../pages/Signup";
+import PageContact from "../pages/Contact";
+import PageAddUser from "../pages/AddUser";
+import PageAddWebinar from "../pages/AddWebinar";
+import PageMyWebinars from "../pages/MyWebinars";
+import PageTeacherWebinars from "../pages/TeacherWebinars";
+import PageUserList from "../pages/UserList";
+import PageUser from "../pages/User";
+import PageWebinar from "../pages/Webinar";
 
 
 

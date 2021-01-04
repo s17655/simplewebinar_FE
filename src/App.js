@@ -1,7 +1,7 @@
-import MyNavbar from "./MyNavbar";
-import MyQuote from "./MyQuote";
+import MyNavbar from "./mainComponents/MyNavbar";
+import MyQuote from "./mainComponents/MyQuote";
 import MyModal from "./components/MyModal.js";
-import MyController from "./MyController"
+import MyController from "./mainComponents/MyController"
 import React, { Component } from "react";
 
 class App extends Component {

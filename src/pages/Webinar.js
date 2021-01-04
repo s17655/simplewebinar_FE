@@ -1,15 +1,19 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { Container, Table, Button, Label } from "reactstrap";
-import { getObjects } from "../functions/APIfunctions";
+import { getObjects,submitDelete, showOk, showError } from "../functions/APIfunctions";
 import NoteSelect from "../specificComponents/NoteSelect";
+import MyModal from "../components/MyModal.js";
 
 class PageWebinar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      jsonResponse: null
+      jsonResponse: null,
+      isModalOpen: true,
     };
+    this.contentx = [];
+    this.deleteWebinar=this.deleteWebinar.bind(this);
   }
 
   async componentDidMount(){
@@ -18,8 +22,41 @@ class PageWebinar extends React.Component {
       finalURL
     );
     this.setState({ jsonResponse: resp });
-    console.log(resp);
+    this.deleteWebinar=this.deleteWebinar.bind(this);
   }
+
+  async deleteWebinar(){
+    var success,
+      textBody,
+      redirect = false;
+
+    var response = await submitDelete("http://localhost:58870/api/simplewebinar/webinars/"+this.props.location.webinarCode,
+      '{"login": "'+this.props.login+'"}')
+
+    if (response.ok) {
+      success = true;
+      textBody = await showOk(response);
+      redirect=true;
+    } else {
+      success = false;
+      textBody = await showError(response);
+    }
+
+    var newModal = (
+      <MyModal
+        key={Date.now()}
+        isSuccess={success}
+        body={textBody}
+        redirectToHome={redirect}
+      />
+    );
+    this.contentx.push(newModal);
+    this.setState((state) => ({
+      isModalOpen: true,
+    }));
+  }
+
+
 
 
   render() {
@@ -65,7 +102,7 @@ class PageWebinar extends React.Component {
                 {"  "}
                 <Button color="warning">Edit</Button>
                 {"  "}
-                <Button color="danger">Delete</Button>
+                <Button color="danger"  onClick={this.deleteWebinar}>Delete</Button>
               </td>
             </tr>
             <tr>
@@ -75,6 +112,7 @@ class PageWebinar extends React.Component {
             <NoteSelect/>
           </Table>
         </Container>)}
+        <div>{this.state.isModalOpen ? this.contentx : null}</div>
       </div>
     );
   }

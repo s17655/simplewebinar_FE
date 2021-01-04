@@ -32,6 +32,22 @@ export async function getObjects(url){
   return response;
 }
 
+//obluga delete
+export async function submitDelete(url, bodyText){
+  var response = await fetch(url, {
+    method:'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-type':'application/json'
+    },
+    body: bodyText,
+  });
+  return response;
+}
+
+
+
+
 
 
 
