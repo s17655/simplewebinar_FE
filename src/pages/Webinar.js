@@ -1,10 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { Container, Table, Button, Label } from "reactstrap";
-import { getObjects,submitDelete, showOk, showError } from "../functions/APIfunctions";
+import { getObjects,submitDelete, showOk, showError, submitPost } from "../functions/APIfunctions";
 import NoteSelect from "../specificComponents/NoteSelect";
 import MyModal from "../components/MyModal.js";
-import { Link } from "react-router-dom";
 
 
 class PageWebinar extends React.Component {
@@ -16,6 +15,7 @@ class PageWebinar extends React.Component {
     };
     this.contentx = [];
     this.deleteWebinar=this.deleteWebinar.bind(this);
+    this.signInOut=this.signInOut.bind(this);
   }
 
   async componentDidMount(){
@@ -33,6 +33,46 @@ class PageWebinar extends React.Component {
       webinarCode: key});
   }
 
+  async signInOut(inOut, webinarCode){
+    var success,
+      textBody,
+      redirect = false;
+
+    var formData = new FormData();
+    var data2 = {
+      "login": this.props.login
+    }
+
+    let response = null;
+    if(inOut==="in"){
+      response = await submitPost(formData,data2,"http://localhost:58870/api/simplewebinar/participations/"+webinarCode);
+    }else if(inOut==="out"){
+      response = await submitDelete("http://localhost:58870/api/simplewebinar/participations/"+webinarCode,
+        '{"login": "'+this.props.login+'"}');
+    }
+
+    if (response.ok) {
+      success = true;
+      textBody = await showOk(response);
+    } else {
+      success = false;
+      textBody = await showError(response);
+    }
+
+    var newModal = (
+      <MyModal
+        key={Date.now()}
+        isSuccess={success}
+        body={textBody}
+        redirectToHome={redirect}
+      />
+    );
+    this.contentx.push(newModal);
+    this.setState((state) => ({
+      isModalOpen: true,
+    }));
+
+  }
 
   async deleteWebinar(){
     var success,
@@ -105,9 +145,9 @@ class PageWebinar extends React.Component {
             <tr>
               <td></td>
               <td>
-                <Button color="success">Sign in</Button>
+                <Button color="success" onClick={()=>this.signInOut("in",this.props.location.webinarCode)}>Sign in</Button>
                 {"  "}
-                <Button color="info">Sign out</Button>
+                <Button color="info" onClick={()=>this.signInOut("out",this.props.location.webinarCode)}>Sign out</Button>
                 {"  "}
                 <Button color="warning" onClick={()=>this.goToObject(this.props.location.webinarCode)}>Edit</Button>
                 {"  "}
