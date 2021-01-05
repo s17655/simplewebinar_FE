@@ -19,7 +19,8 @@ class PageWebinar extends React.Component {
   }
 
   async componentDidMount(){
-    var finalURL = "http://localhost:58870/api/simplewebinar/webinars/"+this.props.location.webinarCode;
+    var finalURL = "http://localhost:58870/api/simplewebinar/webinars/"
+      +this.props.location.webinarCode+(this.props.isLoggedIn?"/"+this.props.login:"");
     var resp = await getObjects(
       finalURL
     );
@@ -158,7 +159,7 @@ class PageWebinar extends React.Component {
               <td><Label>Note the course!</Label></td>
               <td></td>
             </tr>
-            <NoteSelect/>
+            <NoteSelect note={this.state.jsonResponse.note} login={this.props.login}/>
           </Table>
         </Container>)}
         <div>{this.state.isModalOpen ? this.contentx : null}</div>
