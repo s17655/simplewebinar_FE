@@ -21,6 +21,25 @@ export async function submitPost(formData, data2,  url){
 }
 
 
+export async function submitPut(formData, data2,  url){
+  var options = JSON.stringify(Object.fromEntries(formData));
+
+  if(data2!=null)
+     options = mergeTwoJSONStrings(options,JSON.stringify(data2));
+
+  let response = await fetch(url, {
+    method:'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-type':'application/json'
+    },
+    body:
+      options,
+  });
+  return response;
+}
+
+
 export async function getObjects(url){
   var response = await fetch(url, {
     method:'GET',

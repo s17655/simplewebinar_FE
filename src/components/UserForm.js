@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
-import { getObjects, submitPost, showError, showOk } from "../functions/APIfunctions.js";
+import { getObjects, submitPost, showError, showOk, submitPut } from "../functions/APIfunctions.js";
 import MyModal from "../components/MyModal.js";
 import {withRouter} from "react-router-dom";
 
@@ -58,11 +58,19 @@ class UserForm extends React.Component {
       isAdmin: this.inputAdmin.current.checked
     };
 
-    let response = await submitPost(
-      formData,
-      data2,
-      "http://localhost:58870/api/simplewebinar/users"
-    );
+    let response=null;
+    if(this.props.addEdit==="edit"){
+        response = await submitPut(
+        formData,
+        data2,
+        "http://localhost:58870/api/simplewebinar/users/"+this.props.location.userCode);
+    }else{
+        response = await submitPost(
+        formData,
+        data2,
+        "http://localhost:58870/api/simplewebinar/users"
+      );
+    }
 
     if (response.ok) {
       success = true;

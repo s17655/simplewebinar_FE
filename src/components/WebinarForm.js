@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
-import { submitPost, showError, showOk, getObjects } from "../functions/APIfunctions.js";
+import { submitPost, showError, showOk, getObjects, submitPut } from "../functions/APIfunctions.js";
 import MyModal from "../components/MyModal.js";
 import {withRouter} from "react-router-dom";
 
@@ -36,7 +36,7 @@ class WebinarForm extends React.Component {
     var success,
       textBody,
       redirect = false;
-    const myForm = document.getElementById("addWebinarForm");
+    const myForm = document.getElementById("WebinarForm");
     const formData = new FormData(myForm);
 
     //zczytanie dat
@@ -60,11 +60,20 @@ class WebinarForm extends React.Component {
       FinishTime: fFinishTime,
     };
 
-    let response = await submitPost(
-      formData,
-      data2,
-      "http://localhost:58870/api/simplewebinar/webinars"
-    );
+    let response=null;
+    if(this.props.addEdit==="edit"){
+      response = await submitPut(
+        formData,
+        data2,
+        "http://localhost:58870/api/simplewebinar/webinars/"+this.props.location.webinarCode
+      );
+    }else{
+      response = await submitPost(
+        formData,
+        data2,
+        "http://localhost:58870/api/simplewebinar/webinars"
+      );
+    }
 
     if (response.ok) {
       success = true;
@@ -92,7 +101,7 @@ class WebinarForm extends React.Component {
     return (
       <div>
         <Container>
-          <Form id="addWebinarForm">
+          <Form id="WebinarForm">
             <FormGroup>
               <Label for="Topic">Topic</Label>
               <Input
