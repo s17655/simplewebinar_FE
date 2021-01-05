@@ -4,6 +4,8 @@ import { Container, Table, Button, Label } from "reactstrap";
 import { getObjects,submitDelete, showOk, showError } from "../functions/APIfunctions";
 import NoteSelect from "../specificComponents/NoteSelect";
 import MyModal from "../components/MyModal.js";
+import { Link } from "react-router-dom";
+
 
 class PageWebinar extends React.Component {
   constructor(props) {
@@ -22,8 +24,15 @@ class PageWebinar extends React.Component {
       finalURL
     );
     this.setState({ jsonResponse: resp });
-    this.deleteWebinar=this.deleteWebinar.bind(this);
+    this.goToObject=this.goToObject.bind(this);
   }
+
+  goToObject(key){
+    this.props.history.push(
+      {pathname: "/editwebinar/"+key,
+      webinarCode: key});
+  }
+
 
   async deleteWebinar(){
     var success,
@@ -100,7 +109,7 @@ class PageWebinar extends React.Component {
                 {"  "}
                 <Button color="info">Sign out</Button>
                 {"  "}
-                <Button color="warning">Edit</Button>
+                <Button color="warning" onClick={()=>this.goToObject(this.props.location.webinarCode)}>Edit</Button>
                 {"  "}
                 <Button color="danger"  onClick={this.deleteWebinar}>Delete</Button>
               </td>

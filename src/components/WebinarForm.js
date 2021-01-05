@@ -1,13 +1,15 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
-import { submitPost, showError, showOk } from "../functions/APIfunctions.js";
+import { submitPost, showError, showOk, getObjects } from "../functions/APIfunctions.js";
 import MyModal from "../components/MyModal.js";
+import {withRouter} from "react-router-dom";
 
-class AddWebinarForm extends React.Component {
+class WebinarForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isModalOpen: true,
+      jsonResponse: null,
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
@@ -15,6 +17,20 @@ class AddWebinarForm extends React.Component {
     this.inputStartTime = React.createRef();
     this.inputFinishTime = React.createRef();
   }
+
+  async componentDidMount(){
+    if(this.props.addEdit==="edit"){
+      var finalURL = "http://localhost:58870/api/simplewebinar/webinars/"+this.props.location.webinarCode;
+      var resp = await getObjects(
+        finalURL
+      );
+      this.setState({ jsonResponse: resp });
+      console.log(resp);
+    }
+  }
+
+
+
 
   async sendForm() {
     var success,
@@ -84,8 +100,10 @@ class AddWebinarForm extends React.Component {
                 name="Topic"
                 id="Topic"
                 placeholder="Add topic"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.topic}
               />
             </FormGroup>
+            {this.props.addEdit==="add"&&(
             <FormGroup>
               <Label for="Code">Webinar Code</Label>
               <Input
@@ -94,7 +112,7 @@ class AddWebinarForm extends React.Component {
                 id="Code"
                 placeholder="Add Code (5 signs; digits or Capital letters only)"
               />
-            </FormGroup>
+            </FormGroup>)}
             <FormGroup>
               <Label for="Date">Date</Label>
               <Input
@@ -102,6 +120,7 @@ class AddWebinarForm extends React.Component {
                 type="date"
                 id="Date"
                 placeholder="Add date"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.date}
               />
             </FormGroup>
             <FormGroup>
@@ -111,6 +130,7 @@ class AddWebinarForm extends React.Component {
                 type="time"
                 id="StartTime"
                 placeholder="Add start time"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.start}
               />
             </FormGroup>
             <FormGroup>
@@ -120,6 +140,7 @@ class AddWebinarForm extends React.Component {
                 type="time"
                 id="FinishTime"
                 placeholder="Add finish time"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.end}
               />
             </FormGroup>
             <Button
@@ -137,4 +158,4 @@ class AddWebinarForm extends React.Component {
   }
 }
 
-export default AddWebinarForm;
+export default withRouter(WebinarForm);

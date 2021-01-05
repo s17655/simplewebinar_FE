@@ -1,16 +1,18 @@
 import React from "react";
 import FormHeader from "../components/FormHeader.js";
-import AddUserForm from "../specificComponents/AddUserForm.js";
+import {withRouter} from "react-router-dom"
+import UserForm from "../components/UserForm.js";
 
-class EditUser extends React.Component {
+
+class PageEditUser extends React.Component {
   render() {
     return (
       <div>
-        <FormHeader text="Add User" />
-        <AddUserForm/>
+        <FormHeader text={"Edit User: "+this.props.location.userCode} />
+        <UserForm addEdit="edit"/>
       </div>
     );
   }
 }
 
-export default EditUser;
+export default withRouter(PageEditUser);

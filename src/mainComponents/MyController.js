@@ -5,7 +5,9 @@ import PageLogin from "../pages/Login";
 import PageSignup from "../pages/Signup";
 import PageContact from "../pages/Contact";
 import PageAddUser from "../pages/AddUser";
+import PageEditUser from "../pages/EditUser";
 import PageAddWebinar from "../pages/AddWebinar";
+import PageEditWebinar from "../pages/EditWebinar";
 import PageMyWebinars from "../pages/MyWebinars";
 import PageTeacherWebinars from "../pages/TeacherWebinars";
 import PageUserList from "../pages/UserList";
@@ -30,7 +32,7 @@ class MyController extends React.Component {
     return (
       <Switch>
         {" "}
-        <Route exact path="/" ><PageHome/></Route>}
+        <Route exact path="/" ><PageHome/></Route>
         <Route exact path="/login"><PageLogin
           isLoggedIn={this.props.isLoggedIn}
           login={this.props.login}
@@ -38,29 +40,33 @@ class MyController extends React.Component {
           isAdmin={this.props.isAdmin}
           onLogIn={this.logIn}
         /></Route>}
-        <Route exact path="/signup" ><PageSignup/></Route>}
-        <Route exact path="/contact" ><PageContact/></Route>}
-        <Route exact path="/adduser" ><PageAddUser/></Route>}
-        <Route exact path="/addwebinar" ><PageAddWebinar
-          login={this.props.login}
-        /></Route>}
+        <Route exact path="/signup" ><PageSignup/></Route>
+        <Route exact path="/contact" ><PageContact/></Route>
         <Route exact path="/mywebinars" ><PageMyWebinars
           login={this.props.login}
-        /></Route>}
-        <Route exact path="/teacherwebinars" ><PageTeacherWebinars
-          login={this.props.login}
-        /></Route>}
-        <Route exact path="/userlist" ><PageUserList
-          isAdmin={this.props.isAdmin}
-        /></Route>}
-        <Route path="/user" ><PageUser
-          isAdmin={this.props.isAdmin}
         /></Route>}
         <Route path="/webinar" ><PageWebinar
           isLoggedIn={this.props.isLoggedIn}
           isTeacher={this.props.isTeacher}
           login={this.props.login}
         /></Route>}
+        {this.props.isTeacher&&(<Route exact path="/teacherwebinars" ><PageTeacherWebinars
+          login={this.props.login}
+        /></Route>)}
+        {this.props.isTeacher&&(<Route exact path="/addwebinar" ><PageAddWebinar
+          login={this.props.login}
+        /></Route>)}
+        {this.props.isTeacher&&(<Route path="/editwebinar" ><PageEditWebinar
+          login={this.props.login}
+        /></Route>)}
+        {this.props.isAdmin&&(<Route exact path="/userlist" ><PageUserList
+          isAdmin={this.props.isAdmin}
+        /></Route>)}
+        {this.props.isAdmin&&(<Route path="/user" ><PageUser
+          isAdmin={this.props.isAdmin}
+        /></Route>)}
+        {this.props.isAdmin&&(<Route exact path="/adduser" ><PageAddUser/></Route>)}
+        {this.props.isAdmin&&(<Route path="/edituser" ><PageEditUser/></Route>)}
       </Switch>
     );
   }

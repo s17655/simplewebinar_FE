@@ -14,6 +14,7 @@ class PageUser extends React.Component {
     };
     this.contentx = [];
     this.deleteUser=this.deleteUser.bind(this);
+    this.goToObject=this.goToObject.bind(this);
   }
 
 
@@ -53,6 +54,12 @@ class PageUser extends React.Component {
     this.setState((state) => ({
       isModalOpen: true,
     }));
+  }
+
+  goToObject(key){
+    this.props.history.push(
+      {pathname: "/edituser/"+key,
+      userCode: key});
   }
 
 
@@ -101,7 +108,7 @@ class PageUser extends React.Component {
             <tr>
               <td></td>
               <td>
-                <Button color="warning">Edit</Button>
+                <Button color="warning" onClick={()=>this.goToObject(this.props.location.userCode)}>Edit</Button>
                 {"  "}
                 <Button color="danger" onClick={this.deleteUser}>Delete</Button>
               </td>

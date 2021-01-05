@@ -1,16 +1,16 @@
 import React from "react";
 import FormHeader from "../components/FormHeader.js";
-import AddUserForm from "../specificComponents/AddUserForm.js";
+import UserForm from "../components/UserForm.js";
 
-class AddUser extends React.Component {
+class PageAddUser extends React.Component {
   render() {
     return (
       <div>
         <FormHeader text="Add User" />
-        <AddUserForm/>
+        <UserForm addEdit="add"/>
       </div>
     );
   }
 }
 
-export default AddUser;
+export default PageAddUser;

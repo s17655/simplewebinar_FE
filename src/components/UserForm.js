@@ -1,19 +1,51 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
-import { submitPost, showError, showOk } from "../functions/APIfunctions.js";
+import { getObjects, submitPost, showError, showOk } from "../functions/APIfunctions.js";
 import MyModal from "../components/MyModal.js";
+import {withRouter} from "react-router-dom";
 
-class AddUserForm extends React.Component {
+//props addEdit = "add" or "edit"
+class UserForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isModalOpen: true,
+      jsonResponse: null,
+      isCheckedAdmin: false,
+      isCheckedTeacher: false,
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
     this.inputTeacher = React.createRef();
     this.inputAdmin = React.createRef();
+    this.toggleChangeTeacher=this.toggleChangeTeacher.bind(this);
+    this.toggleChangeAdmin=this.toggleChangeAdmin.bind(this);
   }
+
+
+  async componentDidMount(){
+    if(this.props.addEdit==="edit"){
+      var finalURL = "http://localhost:58870/api/simplewebinar/users/"+this.props.location.userCode;
+      var resp = await getObjects(
+        finalURL
+      );
+      this.setState({jsonResponse: resp });
+      this.setState({isCheckedTeacher: this.state.jsonResponse.isTeacher});
+      this.setState({isCheckedAdmin: this.state.jsonResponse.isAdmin});
+    }
+  }
+
+  toggleChangeTeacher = () => {
+    this.setState({
+      isCheckedTeacher: !this.state.isCheckedTeacher,
+    })};
+
+  toggleChangeAdmin = () => {
+    this.setState({
+      isCheckedAdmin: !this.state.isCheckedAdmin,
+    })};
+
+
 
   async sendForm() {
     var success,
@@ -59,6 +91,7 @@ class AddUserForm extends React.Component {
       <div>
         <Container>
           <Form id="addUserForm">
+            {this.props.addEdit==="add"&&(
             <FormGroup>
               <Label for="Login">Login</Label>
               <Input
@@ -67,10 +100,12 @@ class AddUserForm extends React.Component {
                 id="Login"
                 placeholder="Add login"
               />
-            </FormGroup>
+            </FormGroup>)}
             <FormGroup>
               <Label for="Name">Name</Label>
-              <Input type="text" name="Name" id="Name" placeholder="Add name" />
+              <Input type="text" name="Name" id="Name" placeholder="Add name"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.name}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="Surname">Surname</Label>
@@ -79,6 +114,7 @@ class AddUserForm extends React.Component {
                 name="Surname"
                 id="Surname"
                 placeholder="Add surname"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.surname}
               />
             </FormGroup>
             <FormGroup>
@@ -88,6 +124,7 @@ class AddUserForm extends React.Component {
                 name="Email"
                 id="Email"
                 placeholder="Add email"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.email}
               />
             </FormGroup>
             <FormGroup>
@@ -97,6 +134,7 @@ class AddUserForm extends React.Component {
                 name="Password"
                 id="Password"
                 placeholder="Add password"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.password}
               />
             </FormGroup>
             <FormGroup>
@@ -106,6 +144,7 @@ class AddUserForm extends React.Component {
                 name="Password2"
                 id="Password2"
                 placeholder="Repeat password"
+                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.password}
               />
             </FormGroup>
             <Container>
@@ -115,6 +154,8 @@ class AddUserForm extends React.Component {
                     innerRef={this.inputTeacher}
                     type="checkbox"
                     id="IsTeacher"
+                    checked={this.state.isCheckedTeacher}
+                    onChange={this.toggleChangeTeacher}
                   />
                   Teacher
                 </Label>
@@ -125,6 +166,8 @@ class AddUserForm extends React.Component {
                     innerRef={this.inputAdmin}
                     type="checkbox"
                     id="IsAdmin"
+                    checked={this.state.isCheckedAdmin}
+                    onChange={this.toggleChangeAdmin}
                   />
                   Admin
                 </Label>
@@ -133,8 +176,7 @@ class AddUserForm extends React.Component {
             <Button
               color="info"
               style={{ float: "right" }}
-              onClick={this.sendForm}
-            >
+              onClick={this.sendForm}>
               Submit
             </Button>
           </Form>
@@ -145,4 +187,4 @@ class AddUserForm extends React.Component {
   }
 }
 
-export default AddUserForm;
+export default withRouter(UserForm);
