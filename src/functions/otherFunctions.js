@@ -17,3 +17,46 @@ export function isValiEmail(val) {
   }
   return false;
 }
+
+
+export function checkPassword(password){
+
+  //1 - dlugosc
+  if(password.length<8){
+    return false;
+  }
+
+
+  //2 - mala litera
+  if(password.toUpperCase() === password){
+    return false;
+  }
+
+
+  //3 - wielka litera
+  if(password.toLowerCase() === password){
+    return false;
+  }
+
+
+  //4 - cyfra
+  if(!(/[0-9]/.test(password))){
+    return false;
+  }
+
+
+  return true;
+}
+
+
+
+
+export function checkCode(code) {
+
+  if(code.length===5){
+    if(code.match(/^[0-9A-Z]+$/) != null){
+      return true;
+    }
+  }
+  return false
+}

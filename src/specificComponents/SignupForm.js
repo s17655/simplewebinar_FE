@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Container, Alert } from "reactstrap";
 import { submitPost, showError, showOk } from "../functions/APIfunctions.js";
-import { isValiEmail} from "../functions/otherFunctions.js";
+import { isValiEmail, checkPassword} from "../functions/otherFunctions.js";
 import MyModal from "../components/MyModal.js";
 
 class SignupForm extends React.Component {
@@ -12,7 +12,9 @@ class SignupForm extends React.Component {
       password:"",
       password2:"",
       email:"",
-      login:""
+      login:"",
+      passwordMatch:true,
+      passwordValid:false,
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
@@ -24,11 +26,11 @@ class SignupForm extends React.Component {
     const value = target.value;
     const id = target.id;
     this.setState({
-      [id]: value
-    });
+      [id]: value},()=>{this.setState({
+      passwordMatch: this.state.password===this.state.password2,
+      passwordValid: checkPassword(this.state.password)})
+    })
   }
-
-
 
   async sendForm() {
     var success,
@@ -105,6 +107,10 @@ class SignupForm extends React.Component {
                 onChange = {this.handleInputChange}
                 value={this.state.password}
               />
+              {!(this.state.passwordValid)&&(<Alert color="danger">
+                Password is invalid!<br/>
+                Password must constist of at list 8 signs. At least on capital letter, small letter and number.
+              </Alert>)}
             </FormGroup>
             <FormGroup>
               <Label for="Password2">Repeat password</Label>
@@ -117,6 +123,9 @@ class SignupForm extends React.Component {
                 onChange = {this.handleInputChange}
                 value={this.state.password2}
               />
+              {!(this.state.passwordMatch)&&(<Alert color="danger">
+                Passwords don't match!
+              </Alert>)}
             </FormGroup>
             <Button
               color="info"
@@ -125,6 +134,7 @@ class SignupForm extends React.Component {
               disabled=
               {this.state.email.length<1||this.state.login.length<1
                 ||this.state.password.length<1||this.state.password2.length<1
+                ||!(this.state.passwordMatch)||!(this.state.passwordValid)
                 ||!(isValiEmail(this.state.email))}
             >
               Sign up

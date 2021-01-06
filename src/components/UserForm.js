@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Container, Alert } from "reactstrap";
 import { getObjects, submitPost, showError, showOk, submitPut } from "../functions/APIfunctions.js";
-import { isValiEmail } from "../functions/otherFunctions.js";
+import { isValiEmail, checkPassword } from "../functions/otherFunctions.js";
 import MyModal from "../components/MyModal.js";
 import {withRouter} from "react-router-dom";
 
@@ -19,7 +19,9 @@ class UserForm extends React.Component {
       email:"",
       login:"",
       name:"",
-      surnme:""
+      surnme:"",
+      passwordMatch:true,
+      passwordValid:false,
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
@@ -35,8 +37,10 @@ class UserForm extends React.Component {
     const value = target.value;
     const id = target.id;
     this.setState({
-      [id]: value
-    });
+      [id]: value},()=>{this.setState({
+      passwordMatch: this.state.password===this.state.password2,
+      passwordValid: checkPassword(this.state.password)})
+    })
   }
 
   async componentDidMount(){
@@ -54,7 +58,8 @@ class UserForm extends React.Component {
         password:resp.password,
         password2:resp.password,
         name:resp.name,
-        surname:resp.surname
+        surname:resp.surname,
+        passwordValid: checkPassword(resp.password)
        });
     }
   }
@@ -179,6 +184,10 @@ class UserForm extends React.Component {
                 onChange = {this.handleInputChange}
                 value={this.state.password}
               />
+              {!(this.state.passwordValid)&&(<Alert color="danger">
+                Password is invalid!<br/>
+                Password must constist of at list 8 signs. At least on capital letter, small letter and number.
+              </Alert>)}
             </FormGroup>
             <FormGroup>
               <Label for="Password2">Repeat password</Label>
@@ -191,6 +200,9 @@ class UserForm extends React.Component {
                 onChange = {this.handleInputChange}
                 value={this.state.password2}
               />
+              {!(this.state.passwordMatch)&&(<Alert color="danger">
+                Passwords don't match!
+              </Alert>)}
             </FormGroup>
             <Container>
               <FormGroup>
@@ -226,6 +238,7 @@ class UserForm extends React.Component {
               {this.state.email.length<1||this.state.login.length<1
                 ||this.state.password.length<1||this.state.password2.length<1
                 ||this.state.name.length<1||this.state.surname.length<1
+                ||!(this.state.passwordMatch)||!(this.state.passwordValid)
                 ||!(isValiEmail(this.state.email))}
               >
               Submit

@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Container,Alert } from "reactstrap";
 import { submitPost, showError, showOk, getObjects, submitPut } from "../functions/APIfunctions.js";
+import { checkCode } from "../functions/otherFunctions.js";
 import MyModal from "../components/MyModal.js";
 import {withRouter} from "react-router-dom";
 
@@ -14,7 +15,8 @@ class WebinarForm extends React.Component {
       topic:"",
       date:"",
       startTime:"",
-      endTime:""
+      endTime:"",
+      codeValid:false
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
@@ -29,8 +31,10 @@ class WebinarForm extends React.Component {
     const value = target.value;
     const id = target.id;
     this.setState({
-      [id]: value
-    });
+      [id]: value}, ()=>{this.setState({
+      codeValid: checkCode(this.state.code)})
+    }
+    );
   }
 
   async componentDidMount(){
@@ -45,8 +49,8 @@ class WebinarForm extends React.Component {
         topic:resp.topic,
         date:resp.date,
         startTime:resp.start,
-        endTime:resp.end
-
+        endTime:resp.end,
+        codeValid: checkCode(this.state.code)
        });
       console.log(resp);
     }
@@ -149,6 +153,10 @@ class WebinarForm extends React.Component {
                 onChange = {this.handleInputChange}
                 value={this.state.code}
               />
+              {!(this.state.codeValid)&&(<Alert color="danger">
+                Code is invalid!<br/>
+                Code must constist of 5 signs - capital letters or numbers only.
+              </Alert>)}
             </FormGroup>)}
             <FormGroup>
               <Label for="Date">Date</Label>
@@ -192,7 +200,7 @@ class WebinarForm extends React.Component {
               onClick={this.sendForm}
               disabled={this.state.topic.length<1||this.state.code.length<1
                 ||this.state.date.length<1||this.state.startTime.length<1
-                ||this.state.endTime.length<1
+                ||this.state.endTime.length<1||!this.state.codeValid
               }
             >
               Submit
