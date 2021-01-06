@@ -12,10 +12,15 @@ class PageWebinar extends React.Component {
     this.state = {
       jsonResponse: null,
       isModalOpen: true,
+      isFinished:	false,
+      isUserSignedUp:	false,
+      isUserATeacher:	false,
+      isNotedByUser: false,
     };
     this.contentx = [];
     this.deleteWebinar=this.deleteWebinar.bind(this);
     this.signInOut=this.signInOut.bind(this);
+    this.noteSetState=this.noteSetState.bind(this);
   }
 
   async componentDidMount(){
@@ -25,8 +30,20 @@ class PageWebinar extends React.Component {
       finalURL
     );
     this.setState({ jsonResponse: resp });
+    this.setState({
+      isFinished:	resp.isFinished,
+      isUserSignedUp:	resp.isUserSignedUp,
+      isUserATeacher:	resp.isUserATeacher,
+      isNotedByUser: resp.isNotedByUser,
+    });
     this.goToObject=this.goToObject.bind(this);
+    this.noteSetState=this.noteSetState.bind(this);
   }
+
+  noteSetState(){
+    this.setState({ isNotedByUser: true });
+  }
+
 
   goToObject(key){
     this.props.history.push(
@@ -53,6 +70,7 @@ class PageWebinar extends React.Component {
     }
 
     if (response.ok) {
+      this.setState({ isUserSignedUp: inOut==="in"?true:false });
       success = true;
       textBody = await showOk(response);
     } else {
@@ -146,20 +164,30 @@ class PageWebinar extends React.Component {
             <tr>
               <td></td>
               <td>
-                <Button color="success" onClick={()=>this.signInOut("in",this.props.location.webinarCode)}>Sign in</Button>
+                {this.props.isLoggedIn&&!(this.state.isUserSignedUp)&&!(this.state.isFinished)&&!(this.state.isUserATeacher)&&(
+                  <Button color="success" onClick={()=>this.signInOut("in",this.props.location.webinarCode)}>Sign in</Button>)}
                 {"  "}
-                <Button color="info" onClick={()=>this.signInOut("out",this.props.location.webinarCode)}>Sign out</Button>
+                {this.props.isLoggedIn&&this.state.isUserSignedUp&&!(this.state.isFinished)&&!(this.state.isUserATeacher)&&(
+                  <Button color="info" onClick={()=>this.signInOut("out",this.props.location.webinarCode)}>Sign out</Button>)}
                 {"  "}
-                <Button color="warning" onClick={()=>this.goToObject(this.props.location.webinarCode)}>Edit</Button>
+                {!(this.state.isFinished)&&this.state.isUserATeacher&&(
+                  <Button color="warning" onClick={()=>this.goToObject(this.props.location.webinarCode)}>Edit</Button>)}
                 {"  "}
-                <Button color="danger"  onClick={this.deleteWebinar}>Delete</Button>
+                {!(this.state.isFinished)&&this.state.isUserATeacher&&(
+                  <Button color="danger"  onClick={this.deleteWebinar}>Delete</Button>)}
               </td>
             </tr>
             <tr>
-              <td><Label>Note the course!</Label></td>
+              <td>
+                {this.state.isUserSignedUp&&this.state.isFinished&&
+                  (<Label>{this.state.isNotedByUser?"Your note:":"Note the course!"}</Label>)}
+              </td>
               <td></td>
             </tr>
-            <NoteSelect note={this.state.jsonResponse.note} login={this.props.login}/>
+            <NoteSelect note={this.state.jsonResponse.note} login={this.props.login}
+            isFinished={this.state.isFinished} isUserSignedUp={this.state.isUserSignedUp}
+            isNotedByUser={this.state.isNotedByUser} onNoteSetState={this.noteSetState}
+            />
           </Table>
         </Container>)}
         <div>{this.state.isModalOpen ? this.contentx : null}</div>

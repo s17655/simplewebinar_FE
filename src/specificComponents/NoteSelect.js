@@ -15,6 +15,11 @@ class NoteSelect extends React.Component {
     this.contentx = [];
     this.toggleChangeNote = this.toggleChangeNote.bind(this);
     this.noteWebinar = this.noteWebinar.bind(this);
+    this.noteSetState=this.noteSetState.bind(this);
+  }
+
+  noteSetState(){
+    this.props.onNoteSetState();
   }
 
   toggleChangeNote = (event) => {
@@ -43,6 +48,7 @@ class NoteSelect extends React.Component {
     if (response.ok) {
       success = true;
       textBody = await showOk(response);
+      this.noteSetState();
     } else {
       success = false;
       textBody = await showError(response);
@@ -66,11 +72,13 @@ class NoteSelect extends React.Component {
     return (
       <tr>
         <td>
-          <FormGroup>
+        {this.props.isUserSignedUp&&this.props.isFinished&&
+          (<FormGroup>
             <Input
               type="select"
               value={this.state.note}
               onChange={this.toggleChangeNote}
+              disabled={this.props.isNotedByUser}
             >
               <option value={5}>Fantastic</option>
               <option value={4}>Good</option>
@@ -78,15 +86,16 @@ class NoteSelect extends React.Component {
               <option value={2}>Not good</option>
               <option value={1}>Terrible</option>
             </Input>
-          </FormGroup>
+          </FormGroup>)}
         </td>
         <td>
-          <Button
+          {this.props.isUserSignedUp&&this.props.isFinished&&!this.props.isNotedByUser&&
+          (<Button
             color="info"
             onClick={() => this.noteWebinar(this.props.location.webinarCode)}
           >
             Note
-          </Button>
+          </Button>)}
         </td>
         <div>{this.state.isModalOpen ? this.contentx : null}</div>
       </tr>
