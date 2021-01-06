@@ -10,12 +10,27 @@ class WebinarForm extends React.Component {
     this.state = {
       isModalOpen: true,
       jsonResponse: null,
+      code:"",
+      topic:"",
+      date:"",
+      startTime:"",
+      endTime:""
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
     this.inputDate = React.createRef();
     this.inputStartTime = React.createRef();
     this.inputFinishTime = React.createRef();
+    this.handleInputChange=this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const id = target.id;
+    this.setState({
+      [id]: value
+    });
   }
 
   async componentDidMount(){
@@ -24,7 +39,15 @@ class WebinarForm extends React.Component {
       var resp = await getObjects(
         finalURL
       );
-      this.setState({ jsonResponse: resp });
+      this.setState({
+        jsonResponse: resp,
+        code:resp.code,
+        topic:resp.topic,
+        date:resp.date,
+        startTime:resp.start,
+        endTime:resp.end
+
+       });
       console.log(resp);
     }
   }
@@ -107,9 +130,11 @@ class WebinarForm extends React.Component {
               <Input
                 type="text"
                 name="Topic"
-                id="Topic"
+                id="topic"
                 placeholder="Add topic"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.topic}
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.topic}
               />
             </FormGroup>
             {this.props.addEdit==="add"&&(
@@ -118,8 +143,11 @@ class WebinarForm extends React.Component {
               <Input
                 type="text"
                 name="Code"
-                id="Code"
+                id="code"
                 placeholder="Add Code (5 signs; digits or Capital letters only)"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.code}
               />
             </FormGroup>)}
             <FormGroup>
@@ -127,9 +155,11 @@ class WebinarForm extends React.Component {
               <Input
                 innerRef={this.inputDate}
                 type="date"
-                id="Date"
+                id="date"
                 placeholder="Add date"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.date}
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.date}
               />
             </FormGroup>
             <FormGroup>
@@ -137,9 +167,11 @@ class WebinarForm extends React.Component {
               <Input
                 innerRef={this.inputStartTime}
                 type="time"
-                id="StartTime"
+                id="startTime"
                 placeholder="Add start time"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.start}
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.startTime}
               />
             </FormGroup>
             <FormGroup>
@@ -147,15 +179,21 @@ class WebinarForm extends React.Component {
               <Input
                 innerRef={this.inputFinishTime}
                 type="time"
-                id="FinishTime"
+                id="endTime"
                 placeholder="Add finish time"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.end}
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.endTime}
               />
             </FormGroup>
             <Button
               color="info"
               style={{ float: "right" }}
               onClick={this.sendForm}
+              disabled={this.state.topic.length<1||this.state.code.length<1
+                ||this.state.date.length<1||this.state.startTime.length<1
+                ||this.state.endTime.length<1
+              }
             >
               Submit
             </Button>

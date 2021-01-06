@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
 import { getObjects, submitPost, showError, showOk, submitPut } from "../functions/APIfunctions.js";
+import { isValiEmail } from "../functions/otherFunctions.js";
 import MyModal from "../components/MyModal.js";
 import {withRouter} from "react-router-dom";
 
@@ -13,6 +14,12 @@ class UserForm extends React.Component {
       jsonResponse: null,
       isCheckedAdmin: false,
       isCheckedTeacher: false,
+      password:"",
+      password2:"",
+      email:"",
+      login:"",
+      name:"",
+      surnme:""
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
@@ -20,8 +27,17 @@ class UserForm extends React.Component {
     this.inputAdmin = React.createRef();
     this.toggleChangeTeacher=this.toggleChangeTeacher.bind(this);
     this.toggleChangeAdmin=this.toggleChangeAdmin.bind(this);
+    this.handleInputChange=this.handleInputChange.bind(this);
   }
 
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const id = target.id;
+    this.setState({
+      [id]: value
+    });
+  }
 
   async componentDidMount(){
     if(this.props.addEdit==="edit"){
@@ -29,9 +45,17 @@ class UserForm extends React.Component {
       var resp = await getObjects(
         finalURL
       );
-      this.setState({jsonResponse: resp });
-      this.setState({isCheckedTeacher: this.state.jsonResponse.isTeacher});
-      this.setState({isCheckedAdmin: this.state.jsonResponse.isAdmin});
+      this.setState({
+        jsonResponse: resp,
+        isCheckedTeacher: resp.isTeacher,
+        isCheckedAdmin: resp.isAdmin,
+        login:resp.login,
+        email:resp.email,
+        password:resp.password,
+        password2:resp.password,
+        name:resp.name,
+        surname:resp.surname
+       });
     }
   }
 
@@ -105,14 +129,19 @@ class UserForm extends React.Component {
               <Input
                 type="text"
                 name="Login"
-                id="Login"
+                id="login"
                 placeholder="Add login"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.login}
               />
             </FormGroup>)}
             <FormGroup>
               <Label for="Name">Name</Label>
-              <Input type="text" name="Name" id="Name" placeholder="Add name"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.name}
+              <Input type="text" name="Name" id="name" placeholder="Add name"
+              required
+              onChange = {this.handleInputChange}
+              value={this.state.name}
               />
             </FormGroup>
             <FormGroup>
@@ -120,9 +149,11 @@ class UserForm extends React.Component {
               <Input
                 type="text"
                 name="Surname"
-                id="Surname"
+                id="surname"
                 placeholder="Add surname"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.surname}
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.surname}
               />
             </FormGroup>
             <FormGroup>
@@ -130,9 +161,11 @@ class UserForm extends React.Component {
               <Input
                 type="email"
                 name="Email"
-                id="Email"
+                id="email"
                 placeholder="Add email"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.email}
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.email}
               />
             </FormGroup>
             <FormGroup>
@@ -140,9 +173,11 @@ class UserForm extends React.Component {
               <Input
                 type="password"
                 name="Password"
-                id="Password"
+                id="password"
                 placeholder="Add password"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.password}
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.password}
               />
             </FormGroup>
             <FormGroup>
@@ -150,9 +185,11 @@ class UserForm extends React.Component {
               <Input
                 type="password"
                 name="Password2"
-                id="Password2"
+                id="password2"
                 placeholder="Repeat password"
-                defaultValue={this.state.jsonResponse===null?"":this.state.jsonResponse.password}
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.password2}
               />
             </FormGroup>
             <Container>
@@ -184,7 +221,13 @@ class UserForm extends React.Component {
             <Button
               color="info"
               style={{ float: "right" }}
-              onClick={this.sendForm}>
+              onClick={this.sendForm}
+              disabled=
+              {this.state.email.length<1||this.state.login.length<1
+                ||this.state.password.length<1||this.state.password2.length<1
+                ||this.state.name.length<1||this.state.surname.length<1
+                ||!(isValiEmail(this.state.email))}
+              >
               Submit
             </Button>
           </Form>

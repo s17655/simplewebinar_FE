@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input, Container } from "reactstrap";
 import { submitPost, showError, showOk } from "../functions/APIfunctions.js";
+import { isValiEmail} from "../functions/otherFunctions.js";
 import MyModal from "../components/MyModal.js";
 
 class SignupForm extends React.Component {
@@ -8,10 +9,26 @@ class SignupForm extends React.Component {
     super(props);
     this.state = {
       isModalOpen: true,
+      password:"",
+      password2:"",
+      email:"",
+      login:""
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
+    this.handleInputChange=this.handleInputChange.bind(this);
   }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const id = target.id;
+    this.setState({
+      [id]: value
+    });
+  }
+
+
 
   async sendForm() {
     var success,
@@ -58,8 +75,11 @@ class SignupForm extends React.Component {
               <Input
                 type="email"
                 name="Email"
-                id="Email"
+                id="email"
                 placeholder="Add email"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.email}
               />
             </FormGroup>
             <FormGroup>
@@ -67,8 +87,11 @@ class SignupForm extends React.Component {
               <Input
                 type="text"
                 name="Login"
-                id="Login"
+                id="login"
                 placeholder="Add login"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.login}
               />
             </FormGroup>
             <FormGroup>
@@ -76,8 +99,11 @@ class SignupForm extends React.Component {
               <Input
                 type="password"
                 name="Password"
-                id="Password"
+                id="password"
                 placeholder="Add password"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.password}
               />
             </FormGroup>
             <FormGroup>
@@ -85,14 +111,21 @@ class SignupForm extends React.Component {
               <Input
                 type="password"
                 name="Password2"
-                id="Password2"
+                id="password2"
                 placeholder="Repeat password"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.password2}
               />
             </FormGroup>
             <Button
               color="info"
               style={{ float: "right" }}
               onClick={this.sendForm}
+              disabled=
+              {this.state.email.length<1||this.state.login.length<1
+                ||this.state.password.length<1||this.state.password2.length<1
+                ||!(isValiEmail(this.state.email))}
             >
               Sign up
             </Button>

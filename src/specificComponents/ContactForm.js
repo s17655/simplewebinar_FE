@@ -8,6 +8,7 @@ import {
   Container,
 } from "reactstrap";
 import { submitPost, showError, showOk } from "../functions/APIfunctions.js";
+import { isValiEmail } from "../functions/otherFunctions.js";
 import MyModal from "../components/MyModal.js";
 
 class ContactForm extends React.Component {
@@ -15,9 +16,21 @@ class ContactForm extends React.Component {
     super(props);
     this.state = {
       isModalOpen: true,
+      message: "",
+      email: ""
     };
     this.sendForm = this.sendForm.bind(this);
     this.contentx = [];
+    this.handleInputChange=this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const id = target.id;
+    this.setState({
+      [id]: value
+    });
   }
 
   async sendForm() {
@@ -65,8 +78,11 @@ class ContactForm extends React.Component {
               <Input
                 type="textarea"
                 name="Message"
-                id="Message"
+                id="message"
                 placeholder="Add message"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.message}
               />
             </FormGroup>
             <FormGroup>
@@ -74,14 +90,18 @@ class ContactForm extends React.Component {
               <Input
                 type="email"
                 name="Email"
-                id="Email"
+                id="email"
                 placeholder="Add email"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.email}
               />
             </FormGroup>
             <Button
               color="info"
               style={{ float: "right" }}
               onClick={this.sendForm}
+              disabled={this.state.email.length<1||this.state.message.length<1||!(isValiEmail(this.state.email))}
             >
               Submit
             </Button>

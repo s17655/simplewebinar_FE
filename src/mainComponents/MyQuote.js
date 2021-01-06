@@ -22,6 +22,7 @@ function MyQuote(props){
           </footer>
         </blockquote>
       </Container>
+      <br/>
       </div>
   )
 }

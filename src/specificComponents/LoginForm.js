@@ -7,12 +7,24 @@ class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalOpen: true
+      isModalOpen: true,
+      password:"",
+      login:""
     };
     this.sendForm = this.sendForm.bind(this);
     this.inputLogin = React.createRef();
     this.contentx=[];
     this.logIn = this.logIn.bind(this);
+    this.handleInputChange=this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const id = target.id;
+    this.setState({
+      [id]: value
+    });
   }
 
   logIn(pLogin, pIsTeacher, pIsAdmin) {
@@ -66,8 +78,11 @@ class LoginForm extends React.Component {
                 innerRef={this.inputLogin}
                 type="text"
                 name="Login"
-                id="Login"
+                id="login"
                 placeholder="Add login"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.login}
               />
             </FormGroup>
             <FormGroup>
@@ -75,14 +90,18 @@ class LoginForm extends React.Component {
               <Input
                 type="password"
                 name="Password"
-                id="Password"
+                id="password"
                 placeholder="Add password"
+                required
+                onChange = {this.handleInputChange}
+                value={this.state.password}
               />
             </FormGroup>
             <Button
               color="success"
               style={{ float: "right" }}
               onClick={this.sendForm}
+              disabled={this.state.login.length<1||this.state.password.length<1}
             >
               Log in
             </Button>
